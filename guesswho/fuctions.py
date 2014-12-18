@@ -1,7 +1,7 @@
 #this file contains all of the functions required for guess who game
 
 #gets a picture of the user
-import picamera, time
+import picamera, time, json
 
 def getuserimage(name):
     try:
@@ -14,7 +14,7 @@ def getuserimage(name):
                  camera.capture(filename)
                  camera.stop_preview()
                  if input('are you happy y/n :').upper() =='Y':
-                           check = True
+                        check = True
     except picamera.exc.PiCameraMMALError:
          print('camera not detected, please connect your camera and restart the program')
          filename = ''
@@ -22,11 +22,44 @@ def getuserimage(name):
     return filename
 
 def getcharprofile():
-     name = input('what si your name? :')
-     hair = ''
-     while not(hair in['blonde','brown','ginger','black','grey']):
-         hair = input('what is your hair color? :')
+    name = input('what is your name? :')
+    getuserimage(name)
+    hair =''
+    while not(hair in['blonde','brown','ginger','black','grey']):
+        hair = input('what is your hair color? :')
+    eye =''
+    while not(eye in['brown','blue','grey','green']):
+        eye = input('what color are your eyes? :')
+    facial =''
+    while not(facial in['Y','N']):
+        facial = input('do you have any facial hair? :').upper()
+    glasses =''
+    while not(glasses in['Y','N']):
+        glasses = input('are you wearing glasses? :').upper()
+    hat =''
+    while not(hat in['Y','N']):
+        hat = input('are you wearing a hat? :').upper()
+    return [hair,name,eye,facial,glasses,hat]
 
+def load():
+    try:
+        with open('chardata',mode='r')as file:
+            people = json.load(file)
+
+    except IOError:
+        print('failed: no data found')
+        people = []
+    return people
+people = load()
+
+def store():
+    person = getcharprofile()
+    people.append(person)
+    with open('chardata',mode='w') as file:
+        json.dump(people, file)
+
+              
+        
     
 
 
