@@ -18,10 +18,14 @@ def getuserimage(name):
     except picamera.exc.PiCameraMMALError:
          print('camera not detected, please connect your camera and restart the program')
          filename = ''
+         exit()
 
     return filename
 
 def getcharprofile():
+    gender =''
+    while not(gender in['male','female']):
+        gender = input('are you male or female? :')
     name = input('what is your name? :')
     getuserimage(name)
     hair =''
